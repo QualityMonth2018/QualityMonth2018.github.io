@@ -4,6 +4,9 @@ window.addEventListener("load", function(){
 	finalElements[0].parentNode.removeChild(finalElements[0]);
 	finalElements[1].parentNode.removeChild(finalElements[1]);
 
+	finalElements[0].classList.remove("hiddn");
+	finalElements[1].classList.remove("hiddn");
+
 	function isCheater(){
 
 		let cheater = false;
@@ -13,7 +16,12 @@ window.addEventListener("load", function(){
 			if(window.localStorage.getItem("stage"+i)){
 
 				let result = JSON.parse(window.localStorage.getItem("stage"+i));
-				if(result.find((el)=>{return el.slot != el.final})){
+				let slotEqFinal = true;
+				for(let i = 0, j = result.length; i<j; i++){
+					if(result[i].slot != result[i].final){ i = j; slotEqFinal = false;}
+
+				}
+				if(!slotEqFinal){
 					cheater = true;
 				}
 

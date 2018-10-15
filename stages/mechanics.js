@@ -364,8 +364,14 @@ window.addEventListener("load", function(){
 	function allCardsPosition(){
 
 		let cst;
+		let allEqual = true;
 
-		if(!stages[currentStage].content.find((el)=>{return el.slot != el.final})){
+		for(let i = 0, j = stages[currentStage].content.length; i<j; i++){
+
+		if(stages[currentStage].content[i].slot != stages[currentStage].content[i].final){ i = j; allEqual = false; }
+		}
+
+		if(allEqual){
 
 			if(!stages[currentStage].completed){
 
@@ -395,7 +401,13 @@ window.addEventListener("load", function(){
 
 		let footer = document.querySelector("."+targetid+" .card-footer");
 
-		let card_i = stages[currentStage].content.findIndex((el)=>{return el.gc == gcid});
+		let card_i = 0;
+
+		for(let i = 0, j = stages[currentStage].content.length; i<j; i++){
+
+			if(stages[currentStage].content[i].gc == gcid){ card_i = i; i = j; }
+
+		}
 
 		stages[currentStage].content[card_i].final = targetid;
 
@@ -432,9 +444,12 @@ window.addEventListener("load", function(){
 
 		stages[stage].instructions.el = document.querySelector(".row.instructions");
 		stages[stage].instructions.el.parentNode.removeChild(stages[stage].instructions.el);
+		stages[stage].instructions.el.classList.remove("hiddn");
 
 		stages[stage].success.el = document.querySelector(".row.success");
 		stages[stage].success.el.parentNode.removeChild(stages[stage].success.el);
+		stages[stage].success.el.classList.remove("hiddn");
+
 		stages[stage].success.el.querySelector("#btn-next").addEventListener("click", nextStep);
 
 		stages[stage].instructions.el.querySelector("h6").innerHTML = stages[stage].instructions.content;
@@ -449,7 +464,12 @@ window.addEventListener("load", function(){
 				while(stages[stage].content[i].gc == ""){
 		
 					let number = Math.floor(Math.random() * 6);
-					if(!stages[stage].content.find( (el)=>{ return el.gc == "card"+number}) ){
+					let gcEqCn = false;
+					for(let i = 0, j = stages[stage].content.length; i<j; i++){
+
+						if(stages[stage].content[i].gc == "card"+number){ i = j; gcEqCn = true; }
+					}
+					if(!gcEqCn){
 
 						stages[stage].content[i].gc = "card"+number;
 						gameCards[number].querySelector("p").innerHTML = stages[stage].content[i].text;
