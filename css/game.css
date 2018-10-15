@@ -146,3 +146,6 @@
 	.container.cards .row{
 		height: 160px;
 	}
+	.hiddn{
+		display: none;
+	}
